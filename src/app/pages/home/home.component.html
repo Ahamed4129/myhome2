@@ -1,0 +1,12 @@
+<!-- home.component.html -->
+<div class="home-page">
+    <app-header></app-header>
+    <div class="content">
+      <app-category></app-category>
+      <app-addon-sidebar></app-addon-sidebar>
+      <div class="service-list">
+        <app-service-card *ngFor="let service of services" [service]="service"></app-service-card>
+      </div>
+    </div>
+  </div>
+  

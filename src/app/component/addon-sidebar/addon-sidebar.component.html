@@ -1,0 +1,12 @@
+<!-- addon-sidebar.component.html -->
+<div class="addon-sidebar">
+    <h3>Addons</h3>
+    <div *ngFor="let addon of addons">
+      <div class="addon-item">
+        <span>{{ addon.name }}</span>
+        <span>{{ addon.price | currency:'INR' }}</span>
+        <button (click)="addToCart(addon)">Add to cart</button>
+      </div>
+    </div>
+  </div>
+  

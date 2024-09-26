@@ -1,0 +1,11 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .addon-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
