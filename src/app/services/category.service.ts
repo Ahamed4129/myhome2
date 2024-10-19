@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
-interface Category {
-  name: string;
-  checked: boolean;
-}
+import { BehaviorSubject } from 'rxjs';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
-  getCategories(): Category[] {
-    return [
-      { name: 'Furnished apartment', checked: false },
-      { name: 'Unfurnished apartment', checked: false },
-      { name: 'Book by room', checked: false },
-      { name: 'Addon', checked: false },
-      { name: 'Test', checked: false }
-    ];
+  private selectedServicesSource = new BehaviorSubject<any>([]);
+  selectedServices$ = this.selectedServicesSource.asObservable();
+
+  updateSelectedServices(services: any[]): void {
+    this.selectedServicesSource.next(services);
   }
 
-  constructor() { }
+  getSelectedServices(): any[] {
+    return this.selectedServicesSource.getValue();
+  }
 }

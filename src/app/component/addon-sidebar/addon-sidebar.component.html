@@ -1,12 +1,69 @@
-<!-- addon-sidebar.component.html -->
-<div class="addon-sidebar">
-    <h3>Addons</h3>
-    <div *ngFor="let addon of addons">
-      <div class="addon-item">
-        <span>{{ addon.name }}</span>
-        <span>{{ addon.price | currency:'INR' }}</span>
-        <button (click)="addToCart(addon)">Add to cart</button>
+<app-header></app-header>
+<div class="container">
+  <form [formGroup]="appointmentForm" class="appointment-form" (ngSubmit)="onSubmit()">
+    <table class="service-details">
+      <thead>
+        <tr>
+          <th>Service / Addon Details</th>
+          <th>Quantity</th>
+          <th>Rate</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of selectedServices">
+          <td>{{ service.name }}</td>
+          <td>{{ service.quantity }}</td>
+          <td>{{ service.price }}</td>
+          <td>{{ service.price * service.quantity }} </td>
+        </tr>
+      </tbody>
+    </table>
+     
+    <div class="form-row">
+      <div class="form-group">
+        <label for="address1">Address Line 1</label>
+        <input formControlName="address1" id="address1" placeholder="Address Line 1">
+      </div>
+      <div class="form-group">
+        <label for="address2">Address Line 2</label>
+        <input formControlName="address2" id="address2" placeholder="Address Line 2">
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input formControlName="city" id="city" placeholder="City">
       </div>
     </div>
-  </div>
-  
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="state">State</label>
+        <input formControlName="state" id="state" placeholder="State">
+      </div>
+      <div class="form-group">
+        <label for="pincode">Pincode</label>
+        <input formControlName="pincode" id="pincode" placeholder="Pincode">
+      </div>
+    </div>
+    
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="appointmentDate">Appointment Date</label>
+        <input type="date" formControlName="appointmentDate" id="appointmentDate">
+      </div>
+      <div class="form-group">
+        <label for="appointmentTime">Appointment Time</label>
+        <select formControlName="appointmentTime" id="appointmentTime">
+          <option *ngFor="let time of timeSlots" [value]="time">{{ time }}</option>
+        </select>
+      </div>
+    </div>
+
+    <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+    <div class="form-row">
+      <button type="submit" [disabled]="!appointmentForm.valid">Book Appointment</button>
+    </div>
+  </form>
+</div>
+<app-footer></app-footer>

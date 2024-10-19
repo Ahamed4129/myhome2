@@ -1,1 +1,40 @@
-<p>header works!</p>
+<header class="header">
+  <div class="header-logo">
+    <img src="/assets/WhatsApp Image 2024-09-03 at 10.56.05 (1).jpeg" alt="CONPRG Logo" />
+    <h1>CONPRG</h1>
+    <p>We Create Better Environs</p>
+  </div>
+
+  <nav class="header-nav">
+    <a routerLink="/home">Home</a>
+    <!-- Categories Dropdown -->
+    <!-- <a (click)="onChangeMenu('/categories') class="dropdown-btn">Categories </a> -->
+ 
+    <div class="dropdown" (click)="toggleDropdown()">
+      <a (click)= "onChangeMenu('/categories')" class="dropdown-btn">Categories </a>
+      <!-- <a routerLink="/categories" class="dropdown-btn">Categories</a> -->
+      <div class="dropdown-content" [class.show]="isDropdownOpen">
+        <ul>
+          <li *ngFor="let category of categories">{{ category.name }}</li>
+        </ul>
+      </div>
+    </div>
+    
+    <a (click)="onChangeMenu('/about')">About Us</a>
+    <a (click)="onChangeMenu('/contact')">Contact us</a>
+    <a (click)="onChangeMenu('/faq')">FAQ</a>
+    <a (click)="onChangeMenu('/mybooking')">MY Booking</a>
+    <!-- <a routerLink="/contact">Contact Us</a>
+    <a routerLink="/faq">FAQ</a> -->
+  </nav>
+
+  <div class="header-actions">
+    <div class="location">
+      <span>Service at 352603</span>
+    </div>
+    <button class="btn account-btn">My Account</button>
+    <button class="btn cart-btn" routerLink="/card">
+      <span>Cart</span>
+    </button>
+  </div>
+</header>

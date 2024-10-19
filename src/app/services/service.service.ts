@@ -1,23 +1,34 @@
 import { Injectable } from '@angular/core';
-interface Service {
-  name: string;
-  description: string;
-  price: number;
-  hasOptions: boolean;
-  image: string;
-}
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  getServices() {
-    return [
-      { name: 'Variation test service', description: 'This is a placeholder', price: 200, hasOptions: true, image: '/assets/images/placeholder.png' },
-      { name: 'Simple Test Service', description: 'Service description', price: 100.50, hasOptions: false, image: '/assets/images/test-service.png' },
-      { name: 'Balcony', description: 'Book by room', price: 249, hasOptions: false, image: '/assets/images/balcony.png' },
-      // Additional services
-    ];
-  }
 
-  constructor() { }
+  private baseUrl = 'https://localhost:7163/api';
+  constructor(private http: HttpClient) { }
+  getService():Observable<any[]>{
+    return this.http.get<any[]>(`${this.baseUrl}/service`);
+  }
+  addBooking(bookingData: any): Observable<any> {
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+    });
+
+    return this.http.post<any>(`${this.baseUrl}/Booking`, JSON.stringify(bookingData), { headers });
+}
+getBookings(): Observable<any> {
+  return this.http.get(this.baseUrl);
+}
+
+// Get a specific booking by ID
+getBookingById(user: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/Booking/${user}`);
+}
+getBookingsWithStatus(id:any): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/Status/GetBookingWithStatus/${id}`);
+  
+}
+
 }

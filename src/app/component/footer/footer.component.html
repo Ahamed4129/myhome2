@@ -1,0 +1,45 @@
+<footer class="footer">
+    <div class="footer-content">
+      <div class="footer-company-info">
+        <img [src]="companyInfo.logo" alt="{{ companyInfo.name }} Logo">
+        <h2>{{ companyInfo.name }}</h2>
+        <p>{{ companyInfo.slogan }}</p>
+        <p>{{ companyInfo.description }}</p>
+      </div>
+  
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+  
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker"></i> {{ contactInfo.address }}</p>
+        <p><i class="fa fa-phone"></i> {{ contactInfo.phone }}</p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:{{ contactInfo.email }}">{{ contactInfo.email }}</a></p>
+      </div>
+  
+      <div class="footer-social">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a *ngFor="let link of socialLinks" [href]="link.url" target="_blank">
+            <i [class]="link.icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="footer-bottom">
+      <div class="payment-methods">
+        <img *ngFor="let method of paymentMethods" [src]="method.imgUrl" [alt]="method.name">
+      </div>
+      <p>Copyright © 2024. All Rights Reserved.</p>
+    </div>
+  </footer>
+  

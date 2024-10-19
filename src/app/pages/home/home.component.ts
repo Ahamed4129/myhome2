@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServiceService } from 'src/app/services/service.service';
+
 
 @Component({
   selector: 'app-home',
@@ -7,9 +7,10 @@ import { ServiceService } from 'src/app/services/service.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  services = [];
+  
+bookings: any;
 
-  constructor(private serviceService: ServiceService) {}
+  
 
   ngOnInit(): void {
     // this.services = this.serviceService.getServices();

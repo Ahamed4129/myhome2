@@ -1,9 +1,62 @@
-<!-- category-sidebar.component.html -->
-<div class="category-sidebar">
-    <h3>Categories</h3>
-    <div *ngFor="let category of categories">
-      <input type="checkbox" [id]="category.name" [(ngModel)]="category.checked" />
-      <label [for]="category.name">{{ category.name }}</label>
-    </div>
+<app-header></app-header>
+<div class="container">
+  <!-- Sidebar: Categories and Addons -->
+  <aside class="sidebar">
+    <!-- Categories Section -->
+    <section class="category-section">
+      <h3>Categories</h3>
+      <ul class="category-list">
+        <li *ngFor="let category of categories">
+          <input type="checkbox" [id]="category.name" (change)="onCategoryChange(category)" class="category-checkbox" />
+          <label [for]="category.name">{{ category.name }}</label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Addons Section -->
+    <section class="addon-section">
+      <h3>Addons</h3>
+      <ul class="addon-list">
+        <li *ngFor="let addon of addons" class="addon-item">
+          <span class="addon-name">{{ addon.name }}</span>
+          <span class="addon-price">₹ {{ addon.price }}</span>
+          <button (click)="addAddonToCart(addon)" class="addon-cart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart"
+              viewBox="0 0 16 16">
+              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5
+                 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0
+                  0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </section>
+  </aside>
+  <div *ngIf="showNotification" class="notification">
+    {{ notification }}
   </div>
-  
+  <!-- Product Grid -->
+  <main class="product-grid">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+      <div class="product-image">
+        <td><img [src]="'https://localhost:7163/' + product.image" class="img-thumbnail" alt="{{ product.image }}"
+            width="60" />
+          <span class="badge">{{ product.category }}</span>
+      </div>
+      <div class="product-details">
+        <h4>{{ product.name }}</h4>
+        <p>₹ {{ product.price }}</p>
+        <span>
+          Quantity:
+          <input type="number" [(ngModel)]="product.quantity" min="1" />
+        </span>
+        <button (click)="addToCart(product)" class="cart-btn" >Add to cart</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+
+
+<app-footer></app-footer>
