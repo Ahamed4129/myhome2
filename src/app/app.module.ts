@@ -17,7 +17,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './component/login/login.component';
 import { ExampleInterceptorInterceptor } from './services/example-interceptor.interceptor';
 import { MybookingComponent } from './component/mybooking/mybooking.component';
-import { NgxPayPalModule } from 'ngx-paypal';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +35,7 @@ import { NgxPayPalModule } from 'ngx-paypal';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,  FormsModule ,HttpClientModule,ReactiveFormsModule,NgxPayPalModule
+    AppRoutingModule,  FormsModule ,HttpClientModule,ReactiveFormsModule,NgxPaginationModule
   ],
   providers: [
     {

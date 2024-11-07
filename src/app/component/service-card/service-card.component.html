@@ -1,10 +1,57 @@
-<!-- service-card.component.html --><app-header></app-header>
-<div class="service-card">
-    <img [src]="service.image" alt="{{ service.name }}">
-    <h4>{{ service.name }}</h4>
-    <p>{{ service.description }}</p>
-    <span>{{ service.price | currency:'INR' }}</span>
-    <button *ngIf="service.hasOptions" (click)="selectOption()">Select Option</button>
-    <button *ngIf="!service.hasOptions" (click)="addToCart()">Add to cart</button>
+<app-header></app-header>
+
+<div class="booking-container">
+  <div class="status-label" [ngSwitch]="selectedBooking?.statusID">
+    <span *ngSwitchCase="1">Confirmed</span>
+    <span *ngSwitchCase="2">OnProcess</span>
+    <span *ngSwitchCase="3">Failed</span>
+    <span *ngSwitchCase="4">Completed</span>
+    <span *ngSwitchDefault>Unknown Status</span>
   </div>
-  <app-footer></app-footer>
+  
+  <h1>BOOKING</h1>
+
+  <div class="customer-details">
+    <strong>{{ selectedBooking?.user }}</strong>
+    <div>{{ selectedBooking?.address1 }}</div>
+    <div>{{ selectedBooking?.address2 }}</div>
+    <div>{{ selectedBooking?.city }}</div>
+    <div>{{ selectedBooking?.state }}</div>
+    <div>{{ selectedBooking?.pincode }}</div>
+  </div>
+
+  <div class="booking-info">
+    <div>Booking Number: {{ selectedBooking?.id }}</div>
+    <div>Appointment Date: {{ selectedBooking?.appointmentDate | date: 'dd-MM-yyyy' }}</div>
+    <div>Appointment Time: {{ selectedBooking?.appointmentTime }}</div>
+    <div class="total-amount">Total Amount: {{ calculateTotal(selectedBooking?.services || []) }}</div>
+  </div>
+
+  <table class="service-details">
+    <thead>
+      <tr>
+        <th>Service / Addon Details</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of selectedBooking?.services || []">
+        <td>{{ service.name }}</td>
+        <td>{{ service.quantity }}</td>
+        <td>{{ service.price }}</td>
+        <td>{{ service.price * service.quantity }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="total">
+    <strong>Total</strong>
+    <span>{{ calculateTotal(selectedBooking?.services || []) }}</span>
+  </div>
+
+  <button class="btn-btn-danger"(click)="back()"> Back</button>
+</div>
+
+<app-footer></app-footer>

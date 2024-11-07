@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let booking of bookings">
+          <tr *ngFor="let booking of bookings | paginate: { itemsPerPage: 5, currentPage: p }">
             <td> {{ booking.id }}</td>
             <td>{{ booking.appointmentDate | date: 'dd-MM-yyyy'  }}</td>
             <td>
@@ -47,6 +47,7 @@
           </tr>
         </tbody>
       </table>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
     <div *ngIf="isBookingContainerVisible && selectedBooking" class="booking-container">
       <!-- <div class="status-label">

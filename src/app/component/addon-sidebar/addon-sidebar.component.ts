@@ -5,18 +5,31 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceService } from 'src/app/services/service.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { Router } from '@angular/router';
-import {
-  IPayPalConfig,
-  ICreateOrderRequest,
-  ITransactionItem,
-} from 'ngx-paypal';
-
+// import {
+//   IPayPalConfig,
+//   ICreateOrderRequest,
+//   ITransactionItem,
+// } from 'ngx-paypal';
+declare var Razorpay:any;
 @Component({
   selector: 'app-addon-sidebar',
   templateUrl: './addon-sidebar.component.html',
   styleUrls: ['./addon-sidebar.component.css'],
 })
 export class AddonSidebarComponent implements OnInit {
+
+
+  delete(index: number): void {
+    // Retrieve the current selected services from localStorage
+    const selectedServices = JSON.parse(localStorage.getItem('selectedServices') || '[]');
+  
+    if (selectedServices && selectedServices.length > index) {
+      selectedServices.splice(index, 1);
+      localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+      this.selectedServices = selectedServices;
+    }
+  }
+  
   appointmentForm: FormGroup;
   timeSlots: string[] = [
     '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM',
@@ -39,7 +52,7 @@ export class AddonSidebarComponent implements OnInit {
   userData: any;
   selectedServices: any;
   total!: string;
-  public payPalConfig?: IPayPalConfig;
+ // public payPalConfig?: IPayPalConfig;
 
   constructor(
     private fb: FormBuilder,
@@ -62,7 +75,7 @@ export class AddonSidebarComponent implements OnInit {
     this.allServicesService.getService();
     this.userData = JSON.parse(localStorage.getItem('username') as any);
     this.selectedServices = JSON.parse(localStorage.getItem('selectedServices') as any) || [];
-    this.initConfig();
+   // this.initConfig();
   }
 
   calculateTotal(services: any[]): number {
@@ -84,9 +97,9 @@ export class AddonSidebarComponent implements OnInit {
         services: JSON.stringify(this.selectedServices),
         total: this.calculateTotal(this.selectedServices),
         StatusId: this.bookingData.StatusId || 1,
-        OrderId:orderID||this.bookingData.OrderId,
-        PayerId:payerID||this.bookingData.PayerId,
-        PaymentId:paymentID||this.bookingData.PaymentId,
+        OrderId:orderID||this.bookingData.OrderId || '8KP455825P7676540',
+        PayerId:payerID||this.bookingData.PayerId ,
+        PaymentId:paymentID||this.bookingData.PaymentId|| '8KP455825P7676540',
         PaymentSource:paymentSource||this.bookingData.PaymentSource
       };
 
@@ -107,84 +120,140 @@ export class AddonSidebarComponent implements OnInit {
     }
   }
 
-  private initConfig(): void {
+  // private initConfig(): void {
+  //   this.selectedServices = this.selectedServices || [];
+
+  //   const calculatedTotal = this.calculateTotal(this.selectedServices).toFixed(2);
+  //   this.total = calculatedTotal;
+
+  //   if (parseFloat(this.total) > 0) {
+  //     const currency = 'USD';
+
+  //     this.payPalConfig = {
+  //       currency: currency,
+  //       clientId: 'AaBagfr87lnoa38beNuCNqsWBRvZ6zPCafYIWihKIwPzgGHF3_waPggah77YCOF8jKDQlzRSw_eLXPbP',
+  //       createOrderOnClient: (): ICreateOrderRequest => {
+  //         return {
+  //           intent: 'CAPTURE',
+  //           purchase_units: [
+  //             {
+  //               amount: {
+  //                 currency_code: currency,
+  //                 value: this.total,
+  //                 breakdown: {
+  //                   item_total: {
+  //                     currency_code: currency,
+  //                     value: this.total,
+  //                   },
+  //                 },
+  //               },
+  //               items: this.selectedServices.map((service: { name: string; quantity: number; price: number; }): ITransactionItem => {
+  //                 return {
+  //                   name: service.name,
+  //                   quantity: service.quantity.toString(),
+  //                   category: 'DIGITAL_GOODS',
+  //                   unit_amount: {
+  //                     currency_code: currency,
+  //                     value: service.price.toFixed(2),
+  //                   },
+  //                 };
+  //               }),
+  //             },
+  //           ],
+  //         };
+  //       },
+  //       advanced: {
+  //         commit: 'true',
+  //       },
+  //       style: {
+  //         label: 'paypal',
+  //         layout: 'vertical',
+  //       },
+  //       onApprove: (data: any, actions: { order: { get: () => Promise<any>; }; }) => {
+  //         console.log('Transaction was approved, but not yet authorized', data, actions);
+  //         actions.order.get().then((details: any) => {
+  //           console.log('Full order details:', details);
+
+  //           const orderID = data.orderID;
+  //           const payerID = data.payerID;
+  //           const paymentID = data.paymentID;
+  //           const paymentSource = 'paypal'; 
+        
+  //           // Call the submit function and pass the payment details
+  //           this.onSubmit(orderID, payerID, paymentID, paymentSource);
+  //         });
+  //       },
+  //       onClientAuthorization: (data: any) => {
+  //         console.log('Transaction completed successfully', data);
+  //       },
+  //       onCancel: (data: any, actions: any) => {
+  //         console.log('Transaction canceled', data, actions);
+  //       },
+  //       onError: (err: any) => {
+  //         console.log('Error during transaction', err);
+  //       },
+  //       onClick: (data: any, actions: any) => {
+  //         console.log('PayPal button clicked', data, actions);
+  //       },
+  //     };
+  //   } else {
+  //     this.payPalConfig = undefined; 
+  //   }
+  // }
+
+  payNow() {
     this.selectedServices = this.selectedServices || [];
 
-    const calculatedTotal = this.calculateTotal(this.selectedServices).toFixed(2);
-    this.total = calculatedTotal;
+       const calculatedTotal = this.calculateTotal(this.selectedServices).toFixed(2);
+       this.total = calculatedTotal;
+    const options = {
+      order_id: '',
+      key: 'rzp_test_7HdkaZ1xFGPomB', // Razorpay test key
+      amount: calculatedTotal, // Amount in paise (100000 paise = 1000 INR)
+      currency: 'INR',
+      name: ServiceService.name, // Your business name or description
+      description: 'Sample Razorpay demo',
+      image: 'https://cdn.pixabay.com/photo/2023/05/28/03/34/flowers-8022731_640.jpg', // Your logo or image
+      prefill: {
+        name: ServiceService.name, // Name of the customer
+        email: 'ahamedarahuman@gmail.com', // Email of the customer
+        phone: '8825492273' // Customer's phone number
+      },
+      theme: {
+        color: '#6466e3' // Custom theme color for Razorpay modal
+      },
+      handler: (response: any) => {
+        console.log('Payment successful:', response);
+  
+        const paymentID = response.razorpay_payment_id;
+        const orderID = response.razorpay_order_id;
+        const signature = response.razorpay_signature;
+        const paymentSource = 'razorpay';
+  
+        // Call the submit function and pass the payment details
+        this.onSubmit(orderID, paymentID, signature, paymentSource);
+      },
+      modal: {
+        ondismiss: () => {
+          console.log('Payment modal dismissed');
+        }
+      }
+    };
 
-    if (parseFloat(this.total) > 0) {
-      const currency = 'USD';
+    const rzp1 = new Razorpay(options);
 
-      this.payPalConfig = {
-        currency: currency,
-        clientId: 'AaBagfr87lnoa38beNuCNqsWBRvZ6zPCafYIWihKIwPzgGHF3_waPggah77YCOF8jKDQlzRSw_eLXPbP',
-        createOrderOnClient: (): ICreateOrderRequest => {
-          return {
-            intent: 'CAPTURE',
-            purchase_units: [
-              {
-                amount: {
-                  currency_code: currency,
-                  value: this.total,
-                  breakdown: {
-                    item_total: {
-                      currency_code: currency,
-                      value: this.total,
-                    },
-                  },
-                },
-                items: this.selectedServices.map((service: { name: string; quantity: number; price: number; }): ITransactionItem => {
-                  return {
-                    name: service.name,
-                    quantity: service.quantity.toString(),
-                    category: 'DIGITAL_GOODS',
-                    unit_amount: {
-                      currency_code: currency,
-                      value: service.price.toFixed(2),
-                    },
-                  };
-                }),
-              },
-            ],
-          };
-        },
-        advanced: {
-          commit: 'true',
-        },
-        style: {
-          label: 'paypal',
-          layout: 'vertical',
-        },
-        onApprove: (data: any, actions: { order: { get: () => Promise<any>; }; }) => {
-          console.log('Transaction was approved, but not yet authorized', data, actions);
-          actions.order.get().then((details: any) => {
-            console.log('Full order details:', details);
+  
+    rzp1.open();
 
-            const orderID = data.orderID;
-            const payerID = data.payerID;
-            const paymentID = data.paymentID;
-            const paymentSource = 'paypal'; 
-        
-            // Call the submit function and pass the payment details
-            this.onSubmit(orderID, payerID, paymentID, paymentSource);
-          });
-        },
-        onClientAuthorization: (data: any) => {
-          console.log('Transaction completed successfully', data);
-        },
-        onCancel: (data: any, actions: any) => {
-          console.log('Transaction canceled', data, actions);
-        },
-        onError: (err: any) => {
-          console.log('Error during transaction', err);
-        },
-        onClick: (data: any, actions: any) => {
-          console.log('PayPal button clicked', data, actions);
-        },
-      };
-    } else {
-      this.payPalConfig = undefined; 
-    }
+    
+    rzp1.on('payment.success', (response: any) => {
+      console.log('Payment Success:', response);
+    });
+
+    // Handle payment failure
+    rzp1.on('payment.error', (error: any) => {
+      console.log('Payment Failed:', error);
+    });
   }
 }
+

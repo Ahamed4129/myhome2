@@ -8,6 +8,7 @@ import { FaqComponent } from './component/faq/faq.component';
 import { AddonSidebarComponent } from './component/addon-sidebar/addon-sidebar.component';
 import { LoginComponent } from './component/login/login.component';
 import { MybookingComponent } from './component/mybooking/mybooking.component';
+import { ServiceCardComponent } from './component/service-card/service-card.component';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'categories', component: CategoryComponent },
   {path:'card',component:AddonSidebarComponent},
   {path:'mybooking',component:MybookingComponent},
+  {path:'view',component:ServiceCardComponent},
   { path: '', redirectTo: '/login', pathMatch: 'full' },  // Default route
   { path: '**', redirectTo: '/login' }  // Fallback route for unknown paths
 ];

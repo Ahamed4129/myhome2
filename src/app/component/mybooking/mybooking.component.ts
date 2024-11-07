@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/services/service.service';
 
 @Component({
@@ -15,7 +16,7 @@ ngOnInit(): void {
   this.username=JSON.parse(localStorage.getItem('username')as any)
 }
   
-constructor(private allservice:ServiceService){}
+constructor(private allservice:ServiceService,private router:Router){}
 
 getBookings(): void {
   console.log('username',this.username)
@@ -35,20 +36,25 @@ getBookings(): void {
 selectedBooking: any=null;
 isBookingContainerVisible: boolean = false;
 toggleBookingContainer(booking: any): void {
-  const bookingId = booking.id;
-   //this.selectedBooking = booking;
-   this.isBookingContainerVisible = !this.isBookingContainerVisible;
-  this.allservice.getBookingsWithStatus(bookingId).subscribe(
-    (data) => {
-      this.selectedBooking = booking; 
-      console.log('Selected Booking:', this.selectedBooking);
-    },
-  )
-   console.log('Toggled booking:', this.selectedBooking); 
+  // const bookingId = booking.id;
+  //  //this.selectedBooking = booking;
+  //  this.isBookingContainerVisible = !this.isBookingContainerVisible;
+  // this.allservice.getBookingsWithStatus(bookingId).subscribe(
+  //   (data) => {
+  //     this.selectedBooking = booking; 
+  //     console.log('Selected Booking:', this.selectedBooking);
+  //   },
+  // )
+  //  console.log('Toggled booking:', this.selectedBooking); 
+
+
+  this.router.navigateByUrl('/view')
+
+  
 }
 calculateTotal(services: any[]): number {
   return services.reduce((acc, service) => acc + (service.price * service.quantity), 0);
 }
 
-
+p: number = 1;
 }
